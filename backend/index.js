@@ -27,14 +27,9 @@ main()
 async function main(){
     await mongoose.connect(dbUrl);
 }
-const corsOptions = {
-    origin: 'https://breadandbetter.vercel.app', // Frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],   // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-    credentials: true,  // Allow credentials (if needed)
-  };
+
 // Middleware
-app.use(cors(corsOptions
+app.use(cors(
 ));
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
