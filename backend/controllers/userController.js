@@ -121,3 +121,91 @@ export const register = async (req, res) => {
     }
 }
 
+
+
+
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    dob: "",
+    country: "",
+    state: "",
+    district: "",
+    pincode: "",
+    profilePicture: null,
+    gender: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, profilePicture: e.target.files[0] });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach((key) => {
+      formDataToSend.append(key, formData[key]);
+    });
+
+    try {
+      const response = await axios.post("http://localhost:5000/register", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200) {
+        alert("Registration successful!");
+        navigate("/home"); // Redirect to home page
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error registering user");
+    }
+  };
+
+  return (
+    <div className="flex flex-col lg:flex-row h-screen bg-gradient-to-r from-pink-500 to-orange-500 text-white">
+      {/* Welcome Section */}
+      <div className="w-full lg:w-1/3 flex flex-col justify-center items-center p-10 text-center">
+        <h1 className="text-3xl lg:text-4xl font-bold mb-4">Welcome</h1>
+        <p className="text-md lg:text-lg mb-6">
+          You are 30 seconds away from earning your own money!
+        </p>
+        <button
+          className="px-6 py-2 bg-white text-orange-500 font-semibold rounded-md hover:bg-gray-200"
+          onClick={() => window.history.back()}
+        >
+          Go Back
+        </button>
+      </div>
+
+      {/* Form Section */}
+      <div className="w-full lg:w-2/3 bg-white text-black rounded-t-2xl lg:rounded-l-2xl p-6 lg:p-10">
+        <form onSubmit={handleSubmit}>
+          {/* Input Fields */}
+          <input name="firstName" onChange={handleChange} required />
+          <input type="file" name="profilePicture" onChange={handleFileChange} required />
+          {/* Other inputs */}
+          <button type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
