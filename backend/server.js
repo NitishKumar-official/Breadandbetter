@@ -26,9 +26,15 @@ async function main() {
 }
 
 
+const corsOptions = {
+  origin: 'https://breadandbetter.vercel.app', // Allow this specific origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  credentials: true, // Allow cookies if needed
+};
 
-// Middleware
-app.use(cors());
+// Use CORS middleware
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes); // Your user routes for login and OTP
 
