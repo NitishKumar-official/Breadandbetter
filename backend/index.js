@@ -27,9 +27,9 @@ async function main() {
 
 // CORS configuration
 const corsOptions = {
-  origin: 'https://breadandbetter.vercel.app', // Allow requests from this origin
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Allow cookies if needed
+  origin: 'http://localhost:5173', // Allow requests from this origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
+  
 };
 
 // Middleware
@@ -40,5 +40,6 @@ app.use("/api/users", userRoutes); // Your user routes for login and OTP
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
+
   console.log(`Server running on port ${PORT}`);
 });
