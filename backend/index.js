@@ -25,15 +25,10 @@ async function main() {
   await mongoose.connect(dbUrl);
 }
 
-// CORS configuration
-const corsOptions = {
-  origin: 'http://localhost:5173', // Allow requests from this origin
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
-  
-};
+
 
 // Middleware
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes); // Your user routes for login and OTP
 
