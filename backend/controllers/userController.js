@@ -1,4 +1,5 @@
 import User from "../models/userModel.js";
+import UserDetails from "../models/UserDetails.js"
 import axios from "axios";
 
 // Generate OTP
@@ -83,4 +84,40 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
+
+export const register = async (req, res) => {
+  try {
+      const { phone, firstName, lastName, email, dob, address, profilePicture, gender } = req.body;
+  
+      // Check if the user is verified
+      const user = await User.findOne({ phone });
+      if (!user) {
+        return res.status(400).json({ message: "User not found." });
+      }
+  
+      if (!user.isRegistered) {
+        return res.status(400).json({ message: "User is not verified." });
+      }
+  
+      // Save user details
+      const userDetails = new UserDetails({
+        userId: user._id,
+        firstName,
+        lastName,
+        email,
+        phone,
+        dob,
+        address,
+        profilePicture,
+        gender,
+      });
+  
+      await userDetails.save();
+  
+      res.status(201).json({ message: "Registration successful!", redirect: "/home" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Something went wrong." });
+    }
+}
 
