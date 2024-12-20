@@ -1,7 +1,3 @@
-// if(process.env.NODE_ENV != "production"){
-//     require('dotenv').config();
-//   }
-
 import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -13,30 +9,33 @@ dotenv.config();
 
 const app = express();
 
-// const dbUrl = "mongodb://127.0.0.1:27017/otpVari1";
+// Set up the database URL from environment variable
 const dbUrl = process.env.ATLASDB_URL;
 
+// Connect to the database
 main()
-.then(()=>{
-    console.log("connected to database");
-})
-.catch((err)=>{
+  .then(() => {
+    console.log("Connected to database");
+  })
+  .catch((err) => {
     console.log(err);
-})
+  });
 
-async function main(){
-    await mongoose.connect(dbUrl);
+async function main() {
+  await mongoose.connect(dbUrl);
 }
 
+// CORS configuration
 const corsOptions = {
-    origin: 'https://breadandbetter.vercel.app', // Allow requests from this origin
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow cookies if needed
-  };
-  //Middleware
-  app.use(cors(corsOptions));
+  origin: 'https://breadandbetter.vercel.app', // Allow requests from this origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow cookies if needed
+};
+
+// Middleware
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
-app.use("/api/users", userRoutes);
+app.use("/api/users", userRoutes); // Your user routes for login and OTP
 
 // Start server
 const PORT = process.env.PORT || 5000;
