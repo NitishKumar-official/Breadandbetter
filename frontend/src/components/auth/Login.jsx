@@ -68,7 +68,7 @@ const Login = ({ setPhone, setIsOtpSent }) => {
   const sendOtp = async () => {
     setIsLoading(true);
     try {
-      await axios.post("http://localhost:8000/api/users/login", { phone });
+      await axios.post("https://breadandbetter-7e5i.vercel.app/api/users/login", { phone });
       setPhone(phone);
       setIsOtpSent(true);
     } catch (error) {
